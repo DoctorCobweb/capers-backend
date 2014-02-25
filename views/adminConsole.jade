@@ -1,0 +1,13 @@
+h1 Capers Admin Console 
+p.
+  Here you can add/delete the filter terms and their explanations.
+  Once you're done, simply log out and it will be updated.
+
+
+a(class="btn" href="/logout") LOGOUT
+
+h4
+  | BAD TERMS
+  p= filters[0].badTerm
+  p= filters[1].badTerm
+  p= filters[2].badTerm
