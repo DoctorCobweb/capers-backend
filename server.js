@@ -182,6 +182,8 @@ app.get('/filters', function (req, res) {
 
     return FilterModel.find(function (err, filters) {
         if (!err) {
+            console.log('found filters:');
+            console.log(filters);
             return res.send(filters);         
         } else {
             console.log(err);
@@ -196,8 +198,8 @@ app.get('/filters', function (req, res) {
 
 app.get('/logout', loggedInAsAdmin, function (req, res) {
     console.log('in GET /logout route handler');
-    req.session = void 0;    
-    console.log('LOGGED USER OUT. req.session set to undefined. Check to see:');
+    req.session.authenticated = false;    
+    console.log('LOGGED USER OUT. req.session.authenticated === false. Check to see:');
     console.log(req.session);
 
     return res.redirect('/');
@@ -244,7 +246,10 @@ app.listen(PORT, function () {
 // helper functions
 
 function loggedInAsAdmin (req, res, next) {
+    console.log('in loggedInAsAdmin middleware');
     if (!!req.session.authenticated) {
+        console.log('user is authenticated.');
+        console.log(req.session);
         next();
     } else {
         return res.render('unauthorizedAccess');
