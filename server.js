@@ -31,7 +31,15 @@ if (process.env.REDISTOGO_URL) {
     var rtg = require('url').parse(process.env.REDISTOGO_URL);
     var rClient = require('redis').createClient(rtg.port, rtg.hostname);
     var redisStore = new RedisStore({client: rClient});
+    console.log('production redistogo: ' + process.env.REDISTOGO_URL);
+    console.log('rtg:');
+    console.log(rtg);
+    console.log('rClient');
+    console.log(rClient);
+    console.log('redisStore');
+    console.log(redisStore);
 } else {
+    console.log('using localhost redisstore...')
     var redisStore = new RedisStore();
 }
 
@@ -118,6 +126,8 @@ app.post('/sessions', function (req, res) {
      
         function handleAuthenticationSession(success) {
             if (success) {
+                console.log('req.session obj:');
+                console.log(req.session); 
                 req.session.authenticated = true;
                 req.session.username = req.body.username;
                 console.log('SUCCESSFUL LOGIN. req.session:');
