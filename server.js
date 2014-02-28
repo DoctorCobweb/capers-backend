@@ -123,9 +123,11 @@ app.post('/sessions', function (req, res) {
                 console.log('SUCCESSFUL LOGIN. req.session:');
                 console.log(req.session);
             } else {
-                req.session.authenticated = false;
-                console.log('FAILED LOGIN. req.session:');
-                console.log(req.session);
+                if (req.session) {
+                    req.session.authenticated = false;
+                    console.log(req.session);
+                }
+                console.log('FAILED LOGIN');
             }
         }
     }); 
@@ -179,6 +181,63 @@ app.get('/adminConsole', loggedInAsAdmin, function (req, res) {
 
 app.get('/filters', function (req, res) {
     console.log('in GET /filters route handler');
+
+
+    // used to seed the capersdb initially
+    var filter = new FilterModel({
+        badTerm:     'fuck',
+        goodTerm:    'ouch',
+        description: 'some people are offended when hearing rude words. be polite'
+    });
+    filter.save(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('SUCCESS: saved new filter');
+        }
+    });
+  
+    var filter1 = new FilterModel({
+        badTerm:     'shit yeah',
+        goodTerm:    'lovely',
+        description: 'dont know what to say about this one. horrible stuff.'
+    });
+    filter1.save(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('SUCCESS: saved new filter1');
+        }
+    });
+
+    var filter2 = new FilterModel({
+        badTerm:     'blah',
+        goodTerm:    'okay',
+        description: 'blah can make you sound like you are not interested'
+    });
+    filter2.save(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('SUCCESS: saved new filter2');
+        }
+    });
+
+
+    // used to seed the capersdb initially
+    var adminUser = new AdminUserModel({
+        username: 'andre',
+        password: 'andre'
+    });
+    adminUser.save(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('SUCCESS: saved andre as AdminUser');
+        }
+    });
+
+
 
     return FilterModel.find(function (err, filters) {
         if (!err) {
@@ -262,62 +321,7 @@ function loggedInAsAdmin (req, res, next) {
 
 // old junk
 
-    // used to seed the capersdb initially
-    /*
-    var filter = new FilterModel({
-        badTerm:     'fuck',
-        goodTerm:    'ouch',
-        description: 'some people are offended when hearing rude words. be polite'
-    });
-    filter.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('SUCCESS: saved new filter');
-        }
-    });
-  
-    var filter1 = new FilterModel({
-        badTerm:     'shit yeah',
-        goodTerm:    'lovely',
-        description: 'dont know what to say about this one. horrible stuff.'
-    });
-    filter1.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('SUCCESS: saved new filter1');
-        }
-    });
-
-    var filter2 = new FilterModel({
-        badTerm:     'blah',
-        goodTerm:    'okay',
-        description: 'blah can make you sound like you are not interested'
-    });
-    filter2.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('SUCCESS: saved new filter2');
-        }
-    });
-    */
 
 
 
-    // used to seed the capersdb initially
-    /*
-    var adminUser = new AdminUserModel({
-        username: 'andre',
-        password: 'andre'
-    });
-    adminUser.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('SUCCESS: saved andre as AdminUser');
-        }
-    });
-    */
 
