@@ -30,7 +30,9 @@ var capersdbConnection = mongoose.connect(mongo_uri, function (err, res) {
 if (process.env.REDISTOGO_URL) {
     var rtg = require('url').parse(process.env.REDISTOGO_URL);
     var rClient = require('redis').createClient(rtg.port, rtg.hostname);
+    rClient.auth(rtg.auth.split(":")[1]);
     var redisStore = new RedisStore({client: rClient});
+
     console.log('production redistogo: ' + process.env.REDISTOGO_URL);
     console.log('rtg:');
     console.log(rtg);
@@ -125,8 +127,7 @@ app.post('/sessions', function (req, res) {
 
      
         function handleAuthenticationSession(success) {
-                console.log('req obj:');
-                console.log(req ); 
+            if (!req.session) throw 'unable to create req.session';
             if (success) {
                 console.log('req.session obj:');
                 console.log(req.session); 

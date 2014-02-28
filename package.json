@@ -7,7 +7,7 @@
       , "path" : "0.4.9"
       , "mongoose" : "3.8.8"
       , "connect-redis" : "1.4.7"
-      , "redis" : "0.10.x"
+      , "redis" : "0.10.1"
       , "jade" : "1.1.5"
     }
   , "engines": {
