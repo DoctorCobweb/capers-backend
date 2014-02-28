@@ -1,7 +1,10 @@
+//
 // server.js: the node backend for capers web app
+//
 
 
-// load modules
+
+// load modules & define vars
 var applicationRoot = __dirname,
     path = require('path'),
     express = require('express'),
@@ -14,6 +17,7 @@ var applicationRoot = __dirname,
         'mongodb://localhost/capersdb';
     
 
+// ------- DATABASE CONNECTIONS -------------------------
 
 // connect to the mongo db
 var capersdbConnection = mongoose.connect(mongo_uri, function (err, res) {
@@ -45,9 +49,7 @@ if (process.env.REDISTOGO_URL) {
     var redisStore = new RedisStore();
 }
 
-
-
-
+// -------- MONGO SCHEMA DEFINITIONS -------------------
 
 // define model schema for collections
 var Filter = new mongoose.Schema({
@@ -70,11 +72,15 @@ var FilterModel = capersdbConnection.model('Filter', Filter);
 // create express app
 var app = express();
 
-
+// use jade templating engine
 app.set('view engine', 'jade'),
 app.set('views', applicationRoot + '/views'),
 app.set('view options', {layout: false});
 
+
+
+
+// ------ EXPRESS MIDDLEWARE SETUP -----------------------------
 
 // configure the server
 app.configure(function () {
@@ -93,6 +99,9 @@ app.configure(function () {
 });
 
 
+
+
+// ------- HTTP ROUTES DEFINITIONS --------------------
 
 //configre the http routes
 app.post('/sessions', function (req, res) {
@@ -125,7 +134,6 @@ app.post('/sessions', function (req, res) {
             }
         }
 
-     
         function handleAuthenticationSession(success) {
             if (!req.session) throw 'unable to create req.session';
             if (success) {
@@ -195,63 +203,6 @@ app.get('/adminConsole', loggedInAsAdmin, function (req, res) {
 app.get('/filters', function (req, res) {
     console.log('in GET /filters route handler');
 
-
-    // used to seed the capersdb initially
-    var filter = new FilterModel({
-        badTerm:     'fuck',
-        goodTerm:    'ouch',
-        description: 'some people are offended when hearing rude words. be polite'
-    });
-    filter.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('SUCCESS: saved new filter');
-        }
-    });
-  
-    var filter1 = new FilterModel({
-        badTerm:     'shit yeah',
-        goodTerm:    'lovely',
-        description: 'dont know what to say about this one. horrible stuff.'
-    });
-    filter1.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('SUCCESS: saved new filter1');
-        }
-    });
-
-    var filter2 = new FilterModel({
-        badTerm:     'blah',
-        goodTerm:    'okay',
-        description: 'blah can make you sound like you are not interested'
-    });
-    filter2.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('SUCCESS: saved new filter2');
-        }
-    });
-
-
-    // used to seed the capersdb initially
-    var adminUser = new AdminUserModel({
-        username: 'andre',
-        password: 'andre'
-    });
-    adminUser.save(function (err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('SUCCESS: saved andre as AdminUser');
-        }
-    });
-
-
-
     return FilterModel.find(function (err, filters) {
         if (!err) {
             console.log('found filters:');
@@ -262,7 +213,6 @@ app.get('/filters', function (req, res) {
             return res.send(err);
         }
     });
-
 });
 
 
@@ -301,21 +251,19 @@ app.post('/addFilter', function (req, res) {
 
 
 
+// ------- START THE SERVER --------------------------------
 
-
-// start the server
 app.listen(PORT, function () {
     console.log('HTTP express server listening on port %d in %s mode',
         PORT, app.settings.env);
     console.log('Serving client app from: ' + applicationRoot + '/' + CLIENT_APP_DIR);
-
 });
 
 
 
 
 
-// helper functions
+// -------- HELPER FUNCTIONS -----------------------------
 
 function loggedInAsAdmin (req, res, next) {
     console.log('in loggedInAsAdmin middleware');
@@ -332,9 +280,65 @@ function loggedInAsAdmin (req, res, next) {
 
 
 
-// old junk
+// --------- USEFUL OLD JUNK -------------------------------
+
+    // used to seed the capersdb initially
+    /*
+    var filter = new FilterModel({
+        badTerm:     'fuck',
+        goodTerm:    'ouch',
+        description: 'some people are offended when hearing rude words. be polite'
+    });
+    filter.save(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('SUCCESS: saved new filter');
+        }
+    });
+  
+    var filter1 = new FilterModel({
+        badTerm:     'shit yeah',
+        goodTerm:    'lovely',
+        description: 'dont know what to say about this one. horrible stuff.'
+    });
+    filter1.save(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('SUCCESS: saved new filter1');
+        }
+    });
+
+    var filter2 = new FilterModel({
+        badTerm:     'blah',
+        goodTerm:    'okay',
+        description: 'blah can make you sound like you are not interested'
+    });
+    filter2.save(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('SUCCESS: saved new filter2');
+        }
+    });
+    */
 
 
 
 
+    // used to seed the capersdb initially
+    /*
+    var adminUser = new AdminUserModel({
+        username: 'andre',
+        password: 'andre'
+    });
+    adminUser.save(function (err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('SUCCESS: saved andre as AdminUser');
+        }
+    });
+    */
 
