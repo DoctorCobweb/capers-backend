@@ -6,8 +6,8 @@
         "express" : "3.4.8"
       , "path" : "0.4.9"
       , "mongoose" : "3.8.8"
-      , "connect-redis" : "1.4.5"
-      , "redis" : "0.7.3"
+      , "connect-redis" : "1.4.7"
+      , "redis" : "0.10.x"
       , "jade" : "1.1.5"
     }
   , "engines": {

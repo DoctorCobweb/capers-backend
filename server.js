@@ -125,6 +125,8 @@ app.post('/sessions', function (req, res) {
 
      
         function handleAuthenticationSession(success) {
+                console.log('req obj:');
+                console.log(req ); 
             if (success) {
                 console.log('req.session obj:');
                 console.log(req.session); 
