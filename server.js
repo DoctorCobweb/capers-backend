@@ -38,12 +38,12 @@ if (process.env.REDISTOGO_URL) {
     var redisStore = new RedisStore({client: rClient});
 
     console.log('production redistogo: ' + process.env.REDISTOGO_URL);
-    console.log('rtg:');
-    console.log(rtg);
-    console.log('rClient');
-    console.log(rClient);
-    console.log('redisStore');
-    console.log(redisStore);
+    //console.log('rtg:');
+    //console.log(rtg);
+    //console.log('rClient');
+    //console.log(rClient);
+    //console.log('redisStore');
+    //console.log(redisStore);
 } else {
     console.log('using localhost redisstore...')
     var redisStore = new RedisStore();
@@ -87,10 +87,10 @@ app.configure(function () {
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.query());
-    app.use(express.cookieParser('my secret string'));
+    app.use(express.cookieParser('GSSdfsdgjjiuy^gG5F399X aa FD!2#RvSDFGHssdhA'));
     app.use(express.session({
         store: redisStore,
-        secret: 'andre redis session secret',
+        secret: 'hahrea reaaasdf lkDD898$#k kllasdf hhhadsflkjxSeG6WfFFFF0xf',
         cookie: {maxAge: 24 * 60 * 60 *1000}
     }));
     app.use(app.router);
