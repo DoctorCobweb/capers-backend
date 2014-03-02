@@ -205,8 +205,8 @@ app.get('/filters', function (req, res) {
 
     return FilterModel.find(function (err, filters) {
         if (!err) {
-            console.log('found filters:');
-            console.log(filters);
+            //console.log('found filters:');
+            //console.log(filters);
             return res.send(filters);         
         } else {
             console.log(err);
